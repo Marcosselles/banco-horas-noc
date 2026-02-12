@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preload" as="image" href="./welcome-hero.jpg" />
   <title>Registro de Banco de Horas Extras - NOC • Versão 2026 (Safe Import)</title>
 
   <style>
@@ -432,60 +431,19 @@
     to   { text-shadow: 0 0 16px rgba(110,231,255,.40), 0 0 30px rgba(167,139,250,.30); }
   }
   /* =========================================================== */
-  
-/* ======= HERO DE FUNDO (metade da tela) ======= */
-.welcome{ overflow:hidden; }
-.welcome::before{
-  content:"";
-  position:absolute; left:0; right:0; top:0;
-  height: min(50vh, 420px);
-  background-image: url("./welcome-hero.jpg");
-  background-size: cover; background-position: center top; background-repeat:no-repeat;
-  filter: saturate(1.05) brightness(0.95);
-  mix-blend-mode: screen; opacity:.9; pointer-events:none;
-}
-.welcome::after{
-  content:"";
-  position:absolute; left:0; right:0; top: min(50vh, 420px);
-  height:160px; pointer-events:none;
-  background: linear-gradient(to bottom, rgba(7,7,10,0.0), rgba(7,7,10,0.55) 40%, rgba(7,7,10,0.85));
-}
-.welcome-card{ backdrop-filter: blur(4px); }
-@media (max-width: 720px){
-  .welcome::before{ height: 40vh; }
-  .welcome::after{ top: 40vh; }
-}
-/* ======= HERO no BODY apenas quando a tela de boas-vindas estiver ativa ======= */
-body.welcome-mode{ position:relative; overflow:hidden; }
-body.welcome-mode::before{
-  content:""; position:fixed; left:0; right:0; top:0; z-index:0;
-  height:min(50vh, 420px);
-  background-image:url("./welcome-hero.jpg");
-  background-size:cover; background-position:center top; background-repeat:no-repeat;
-  filter:saturate(1.05) brightness(0.95);
-  opacity:.85; mix-blend-mode:screen; pointer-events:none;
-}
-body.welcome-mode::after{
-  content:""; position:fixed; left:0; right:0; top:min(50vh, 420px); z-index:0;
-  height:180px; pointer-events:none;
-  background:linear-gradient(to bottom, rgba(7,7,10,0.0), rgba(7,7,10,0.55) 40%, rgba(7,7,10,0.85));
-}
-
- </style>
+  </style>
 
   <!-- Supabase JS SDK v2 (3.1) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2</script>
 </head>
 <body>
- <script>document.body.classList.add("welcome-mode");</script>
 
   <!-- ================== BOAS-VINDAS: aparece primeiro ================== -->
   <section id="welcome" class="welcome" aria-labelledby="welcome-title">
     <div class="welcome-card">
       <div class="welcome-logo" aria-hidden="true">NOC</div>
       <h1 id="welcome-title" class="welcome-title">
-        Bem-vindo ao Banco de Horas Extras
-  TIME NOC TTECH CLOUD
+        Bem-vindo ao Banco de Horas Extras — TIME NOC TTECH CLOUD
       </h1>
       <p class="welcome-sub">
         Centralize seus lançamentos com segurança. Faça login para sincronizar com o Supabase ou continue sem login usando armazenamento local.
@@ -764,8 +722,8 @@ body.welcome-mode::after{
   <!-- ========== 3.2: Script de Autenticação (login box + login/logout/signup) ========== -->
   <script>
     /** ========= CONFIGURE AQUI ========= **/
-    const SUPABASE_URL = "https://rmscrqyivkzhxkbdzyge.supabase.co";   // <= TROCAR
-    const SUPABASE_ANON_KEY = "sb_publishable_inOKmhdb4wUg2LmS1R6DJQ_ivUIpe9W";               // <= TROCAR
+    const SUPABASE_URL = "https://SEU-PROJECT-REF.supabase.co";   // <= TROCAR
+    const SUPABASE_ANON_KEY = "SEU-ANON-PUBLIC-KEY";               // <= TROCAR
     /** ================================== **/
 
     function waitForSupabase() {
