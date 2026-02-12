@@ -1,383 +1,359 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro de Banco de Horas Extras - NOC | Versão 2026</title>
-  <style>
-    :root{
-      --bg:#0b0b0f;
-      --panel:#101018;
-      --panel2:#0f0f16;
-      --card:#141421;
-      --text:#e8e8ee;
-      --muted:#a8a8b5;
-      --line:#242436;
-      --accent:#6ee7ff;
-      --accent2:#a78bfa;
-      --good:#22c55e;
-      --warn:#f59e0b;
-      --bad:#ef4444;
-      --shadow: 0 10px 30px rgba(0,0,0,.45);
-      --radius: 14px;
-      --radius-sm: 10px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-    }
-
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family:var(--font);
-      background:
-        radial-gradient(900px 400px at 10% -10%, rgba(110,231,255,.10), transparent 60%),
-        radial-gradient(900px 400px at 90% 0%, rgba(167,139,250,.10), transparent 60%),
-        linear-gradient(180deg, #07070a 0%, var(--bg) 45%, #07070a 100%);
-      color:var(--text);
-      min-height:100vh;
-    }
-
-    a{ color:inherit; text-decoration:none; }
-    .container{
-      width:min(1240px, 94vw);
-      margin: 22px auto 56px;
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: 18px 18px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(16,16,24,.85), rgba(16,16,24,.55));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 12px;
-      z-index: 50;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      min-width: 260px;
-    }
-    .logo{
-      width:40px; height:40px;
-      border-radius: 12px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(110,231,255,.9), transparent 55%),
-        radial-gradient(circle at 70% 70%, rgba(167,139,250,.9), transparent 55%),
-        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0));
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 8px 20px rgba(0,0,0,.45);
-      display:grid; place-items:center;
-      font-weight:800; letter-spacing:.4px;
-    }
-    .brand h1{
-      margin:0;
-      font-size: 16px;
-      line-height: 1.2;
-      font-weight: 800;
-    }
-    .brand p{
-      margin:2px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    nav{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
-    .chip{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding:8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-      cursor: pointer;
-      user-select:none;
-      transition: transform .1s ease, border-color .15s ease, background .15s ease;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      border-color: rgba(110,231,255,.35);
-      background: rgba(110,231,255,.06);
-      color: var(--text);
-    }
-
-    main{
-      margin-top: 18px;
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 16px;
-      align-items: start;
-    }
-
-    @media (max-width: 980px){
-      header{ position:relative; top:auto; }
-      main{ grid-template-columns: 1fr; }
-      .brand{ min-width:auto; }
-      nav{ justify-content:flex-start; }
-    }
-
-    .card{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(20,20,33,.80), rgba(20,20,33,.55));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-
-    .card .card-h{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .card .card-h h2{
-      margin:0;
-      font-size: 14px;
-      letter-spacing:.3px;
-      font-weight: 800;
-    }
-    .sub{
-      margin:6px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .card .card-b{
-      padding: 14px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 10px;
-    }
-    .field{ grid-column: span 6; }
-    .field.sm{ grid-column: span 4; }
-    .field.xs{ grid-column: span 3; }
-    .field.full{ grid-column: span 12; }
-
-    @media (max-width: 720px){
-      .field, .field.sm, .field.xs{ grid-column: span 12; }
-    }
-
-    label{
-      display:block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    input[type="text"], input[type="number"], input[type="date"], select, textarea{
-      width:100%;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      outline:none;
-      transition: border-color .15s ease, background .15s ease, transform .06s ease;
-    }
-    textarea{ min-height: 90px; resize: vertical; }
-
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(110,231,255,.55);
-      background: rgba(110,231,255,.06);
-    }
-
-    .row{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-
-    .btn{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor:pointer;
-      transition: transform .1s ease, border-color .15s ease, background .15s ease;
-      user-select:none;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(110,231,255,.35);
-      background: rgba(110,231,255,.08);
-    }
-    .btn.primary{
-      border-color: rgba(110,231,255,.35);
-      background: linear-gradient(135deg, rgba(110,231,255,.18), rgba(167,139,250,.12));
-    }
-    .btn.danger{
-      border-color: rgba(239,68,68,.40);
-      background: rgba(239,68,68,.10);
-    }
-    .btn.ghost{
-      background: transparent;
-    }
-    .btn.small{
-      padding: 7px 9px;
-      border-radius: 10px;
-      font-size: 12px;
-    }
-    .btn:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      transform:none;
-    }
-
-    .toggle{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .toggle input{
-      width: 18px; height:18px;
-      accent-color: var(--accent);
-    }
-    .muted{ color: var(--muted); font-size: 12px; }
-
-    /* Summary cards */
-    .summary{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .kpi{
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-    }
-    .kpi .t{ font-size: 11px; color: var(--muted); margin-bottom: 6px;}
-    .kpi .v{ font-size: 18px; font-weight: 900; letter-spacing:.2px; }
-    .kpi .tag{
-      margin-top: 6px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    @media (max-width: 980px){
-      .summary{ grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 460px){
-      .summary{ grid-template-columns: 1fr; }
-    }
-
-    /* Table */
-    .table-wrap{
-      overflow:auto;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-    }
-    table{
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 1040px;
-      font-size: 12px;
-    }
-    th, td{
-      padding: 10px 10px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      vertical-align: top;
-    }
-    th{
-      text-align:left;
-      color: var(--muted);
-      font-weight: 800;
-      background: rgba(255,255,255,.02);
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-    tr:hover td{
-      background: rgba(110,231,255,.05);
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .badge.good{ border-color: rgba(34,197,94,.35); color: #bdf7ce; background: rgba(34,197,94,.08); }
-    .badge.warn{ border-color: rgba(245,158,11,.35); color: #ffe3b0; background: rgba(245,158,11,.08); }
-    .badge.bad{ border-color: rgba(239,68,68,.35); color: #ffd0d0; background: rgba(239,68,68,.08); }
-
-    .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .alerts{
-      margin-top: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(239,68,68,.20);
-      background: rgba(239,68,68,.06);
-      padding: 12px;
-      display:none;
-    }
-    .alerts h3{
-      margin:0 0 8px;
-      font-size: 13px;
-      color: #ffd0d0;
-    }
-    .alerts ul{
-      margin: 0;
-      padding-left: 18px;
-      color: #ffd0d0;
-      font-size: 12px;
-    }
-
-    footer{
-      margin-top: 16px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(16,16,24,.40);
-      color: var(--muted);
-      font-size: 12px;
-      box-shadow: var(--shadow);
-    }
-    footer .ft{
-      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-
-    /* Print/PDF */
-    @media print{
-      header, .no-print{ display:none !important; }
-      body{ background: #fff; color:#111; }
-      .card, footer{
-        box-shadow:none !important;
-        background:#fff !important;
-        border-color:#ddd !important;
-      }
-      table{ min-width: 0; }
-      th{ position: static; background:#f5f5f5; color:#222; }
-      tr:hover td{ background: transparent; }
-      .badge{ border-color:#ccc; color:#333; background:#f5f5f5; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registro de Banco de Horas Extras - NOC • Versão 2026 (Safe Import)</title>
+<style>
+:root{
+  --bg:#0b0b0f;
+  --panel:#101018;
+  --panel2:#0f0f16;
+  --card:#141421;
+  --text:#e8e8ee;
+  --muted:#a8a8b5;
+  --line:#242436;
+  --accent:#6ee7ff;
+  --accent2:#a78bfa;
+  --good:#22c55e;
+  --warn:#f59e0b;
+  --bad:#ef4444;
+  --shadow: 0 10px 30px rgba(0,0,0,.45);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family:var(--font);
+  background:
+    radial-gradient(900px 400px at 10% -10%, rgba(110,231,255,.10), transparent 60%),
+    radial-gradient(900px 400px at 90% 0%, rgba(167,139,250,.10), transparent 60%),
+    linear-gradient(180deg, #07070a 0%, var(--bg) 45%, #07070a 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+a{ color:inherit; text-decoration:none; }
+.container{
+  width:min(1240px, 94vw);
+  margin: 22px auto 56px;
+}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding: 18px 18px;
+  border:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(16,16,24,.85), rgba(16,16,24,.55));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 12px;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+  min-width: 260px;
+}
+.logo{
+  width:40px; height:40px;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(110,231,255,.9), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(167,139,250,.9), transparent 55%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,0));
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,.45);
+  display:grid; place-items:center;
+  font-weight:800; letter-spacing:.4px;
+}
+.brand h1{
+  margin:0;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+.brand p{
+  margin:2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+nav{
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+}
+.chip{
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.03);
+  padding:8px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select:none;
+  transition: transform .1s ease, border-color .15s ease, background .15s ease;
+}
+.chip:hover{
+  transform: translateY(-1px);
+  border-color: rgba(110,231,255,.35);
+  background: rgba(110,231,255,.06);
+  color: var(--text);
+}
+main{
+  margin-top: 18px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 980px){
+  header{ position:relative; top:auto; }
+  main{ grid-template-columns: 1fr; }
+  .brand{ min-width:auto; }
+  nav{ justify-content:flex-start; }
+}
+.card{
+  border:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(20,20,33,.80), rgba(20,20,33,.55));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.card .card-h{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.card .card-h h2{
+  margin:0;
+  font-size: 14px;
+  letter-spacing:.3px;
+  font-weight: 800;
+}
+.sub{
+  margin:6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.card .card-b{
+  padding: 14px;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+}
+.field{ grid-column: span 6; }
+.field.sm{ grid-column: span 4; }
+.field.xs{ grid-column: span 3; }
+.field.full{ grid-column: span 12; }
+@media (max-width: 720px){
+  .field, .field.sm, .field.xs{ grid-column: span 12; }
+}
+label{
+  display:block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+input[type="text"], input[type="number"], input[type="date"], select, textarea{
+  width:100%;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  outline:none;
+  transition: border-color .15s ease, background .15s ease, transform .06s ease;
+}
+textarea{ min-height: 90px; resize: vertical; }
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(110,231,255,.55);
+  background: rgba(110,231,255,.06);
+}
+.row{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+}
+.btn{
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor:pointer;
+  transition: transform .1s ease, border-color .15s ease, background .15s ease;
+  user-select:none;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(110,231,255,.35);
+  background: rgba(110,231,255,.08);
+}
+.btn.primary{
+  border-color: rgba(110,231,255,.35);
+  background: linear-gradient(135deg, rgba(110,231,255,.18), rgba(167,139,250,.12));
+}
+.btn.danger{
+  border-color: rgba(239,68,68,.40);
+  background: rgba(239,68,68,.10);
+}
+.btn.ghost{
+  background: transparent;
+}
+.btn.small{
+  padding: 7px 9px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+.toggle{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
+.toggle input{
+  width: 18px; height:18px;
+  accent-color: var(--accent);
+}
+.muted{ color: var(--muted); font-size: 12px; }
+/* Summary cards */
+.summary{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.kpi{
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+.kpi .t{ font-size: 11px; color: var(--muted); margin-bottom: 6px;}
+.kpi .v{ font-size: 18px; font-weight: 900; letter-spacing:.2px; }
+.kpi .tag{
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+@media (max-width: 980px){
+  .summary{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 460px){
+  .summary{ grid-template-columns: 1fr; }
+}
+/* Table */
+.table-wrap{
+  overflow:auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.18);
+}
+table{
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1040px;
+  font-size: 12px;
+}
+th, td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  vertical-align: top;
+}
+th{
+  text-align:left;
+  color: var(--muted);
+  font-weight: 800;
+  background: rgba(255,255,255,.02);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+tr:hover td{
+  background: rgba(110,231,255,.05);
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.badge.good{ border-color: rgba(34,197,94,.35); color: #bdf7ce; background: rgba(34,197,94,.08); }
+.badge.warn{ border-color: rgba(245,158,11,.35); color: #ffe3b0; background: rgba(245,158,11,.08); }
+.badge.bad{ border-color: rgba(239,68,68,.35); color: #ffd0d0; background: rgba(239,68,68,.08); }
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.alerts{
+  margin-top: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(239,68,68,.20);
+  background: rgba(239,68,68,.06);
+  padding: 12px;
+  display:none;
+}
+.alerts h3{
+  margin:0 0 8px;
+  font-size: 13px;
+  color: #ffd0d0;
+}
+.alerts ul{
+  margin: 0;
+  padding-left: 18px;
+  color: #ffd0d0;
+  font-size: 12px;
+}
+footer{
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(16,16,24,.40);
+  color: var(--muted);
+  font-size: 12px;
+  box-shadow: var(--shadow);
+}
+footer .ft{
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+}
+/* Print/PDF */
+@media print{
+  header, .no-print{ display:none !important; }
+  body{ background: #fff; color:#111; }
+  .card, footer{
+    box-shadow:none !important;
+    background:#fff !important;
+    border-color:#ddd !important;
+  }
+  table{ min-width: 0; }
+  th{ position: static; background:#f5f5f5; color:#222; }
+  tr:hover td{ background: transparent; }
+  .badge{ border-color:#ccc; color:#333; background:#f5f5f5; }
+}
+</style>
 </head>
-
 <body>
   <div class="container">
     <header>
@@ -385,14 +361,13 @@
         <div class="logo" aria-label="Logo da empresa">NOC</div>
         <div>
           <h1>Registro de Banco de Horas Extras - NOC</h1>
-          <p>Versão 2026 • Registro local + Backup (JSON/CSV) • Design moderno</p>
+          <p>Versão 2026 • Persistência local + Backup (JSON/CSV) • Importação segura (merge)</p>
         </div>
       </div>
-
       <nav class="no-print" aria-label="Ações rápidas">
         <button class="chip" id="btnExportJSON" title="Exportar backup em JSON">Exportar JSON</button>
         <button class="chip" id="btnExportCSV" title="Exportar planilha em CSV">Exportar CSV</button>
-        <button class="chip" id="btnImportJSON" title="Importar backup JSON">Importar JSON</button>
+        <button class="chip" id="btnImportJSON" title="Importar backup JSON (merge seguro)">Importar JSON</button>
         <button class="chip" id="btnPrintPDF" title="Imprimir/Salvar em PDF">Imprimir/PDF</button>
         <button class="chip" id="btnClearAll" title="Apagar todos os registros (cuidado)">Limpar Tudo</button>
       </nav>
@@ -403,7 +378,7 @@
       <div class="card-h">
         <div>
           <h2>Resumo de Horas (Automático)</h2>
-          <div class="sub">Atualiza ao incluir, editar, excluir, filtrar e importar backups.</div>
+          <div class="sub">KPIs refletem o conjunto filtrado abaixo. Importação sempre faz <strong>merge</strong> e cria backup automático.</div>
         </div>
         <div class="row no-print">
           <span class="badge" id="badgeStorage">💾 Dados: carregando...</span>
@@ -442,18 +417,17 @@
         <div class="card-h">
           <div>
             <h2>Registros</h2>
-            <div class="sub">Filtros, pesquisa, edição e exclusão. A coluna “Acumulado” é o saldo após cada registro (ordem por data).</div>
+            <div class="sub">Filtros, pesquisa, edição e exclusão. “Acumulado” calculado por analista (ordem por data).</div>
           </div>
           <div class="row no-print">
             <span class="badge" id="badgeCount">📌 0 registros</span>
           </div>
         </div>
-
         <div class="card-b">
           <div class="grid no-print" style="margin-bottom:12px;">
             <div class="field sm">
               <label for="filterAnalyst">Filtrar por Analista</label>
-              <input list="analystsList" id="filterAnalyst" type="text" placeholder="Ex: Marcos, João, Maria..." />
+              <input list="analystsList" id="filterAnalyst" type="text" placeholder="Ex: Marcosselles, Carla..." />
             </div>
             <div class="field xs">
               <label for="filterType">Tipo</label>
@@ -520,7 +494,6 @@
             <span class="badge" id="badgeMode">✍️ Modo: Novo</span>
           </div>
         </div>
-
         <div class="card-b">
           <form id="entryForm" autocomplete="off" class="no-print">
             <div class="grid">
@@ -528,21 +501,20 @@
                 <label for="analyst">Nome do Analista *</label>
                 <input list="analystsList" id="analyst" type="text" placeholder="Digite ou selecione" required />
                 <datalist id="analystsList">
-                  <!-- você pode pré-carregar alguns nomes aqui -->
                   <option value="Marcosselles"></option>
                   <option value="Carla"></option>
                   <option value="Danilo"></option>
                   <option value="Andre"></option>
                   <option value="Matheus"></option>
-				  <option value="Nalbert"></option>
-				  <option value="Bruno"></option>
-				  <option value="Tiago"></option>
-				  <option value="Welber"></option>
-				  <option value="Adriana"></option>
-				  <option value="Bianca"></option>
-				  <option value="Jarbas"></option>
-				  <option value="Jonas"></option>
-				  <option value="Ranom"></option>
+                  <option value="Nalbert"></option>
+                  <option value="Bruno"></option>
+                  <option value="Tiago"></option>
+                  <option value="Welber"></option>
+                  <option value="Adriana"></option>
+                  <option value="Bianca"></option>
+                  <option value="Jarbas"></option>
+                  <option value="Jonas"></option>
+                  <option value="Ranom"></option>
                 </datalist>
               </div>
 
@@ -616,570 +588,587 @@
   <!-- Input de import (oculto) -->
   <input type="file" id="importFile" accept="application/json" style="display:none;" />
 
-  <script>
-    /***********************
-     * Registro NOC v2026
-     * - localStorage (persistência)
-     * - CRUD (criar, editar, excluir)
-     * - filtros e pesquisa
-     * - export JSON/CSV e import JSON
-     * - imprimir/salvar PDF (browser)
-     ***********************/
+<script>
+/****************************************
+ * Registro NOC v2026 (Safe Import)
+ * - localStorage (persistência)
+ * - CRUD (criar, editar, excluir)
+ * - filtros e pesquisa
+ * - export JSON/CSV e import JSON (merge + backup automático)
+ * - imprimir/salvar PDF (browser)
+ ***************************************/
+const STORAGE_KEY  = "noc_overtime_v2026_records";
+const SETTINGS_KEY = "noc_overtime_v2026_settings";
+const $ = (id) => document.getElementById(id);
 
-    const STORAGE_KEY = "noc_overtime_v2026_records";
-    const SETTINGS_KEY = "noc_overtime_v2026_settings";
+// Elementos
+const tableBody     = $("tableBody");
+const alertsBox     = $("alertsBox");
+const alertsList    = $("alertsList");
+const badgeCount    = $("badgeCount");
+const badgeStorage  = $("badgeStorage");
+const badgeMode     = $("badgeMode");
+const kpiTotalHours = $("kpiTotalHours");
+const kpiHolidayHours = $("kpiHolidayHours");
+const kpiBankOut    = $("kpiBankOut");
+const kpiBalance    = $("kpiBalance");
 
-    const $ = (id) => document.getElementById(id);
+// Form
+const entryForm   = $("entryForm");
+const analystEl   = $("analyst");
+const dateEl      = $("date");
+const hoursEl     = $("hours");
+const holidayEl   = $("holiday");
+const bankOutEl   = $("bankOut");
+const outReasonEl = $("outReason");
+const notesEl     = $("notes");
+const btnSave     = $("btnSave");
+const btnCancelEdit = $("btnCancelEdit");
 
-    // Elementos
-    const tableBody = $("tableBody");
-    const alertsBox = $("alertsBox");
-    const alertsList = $("alertsList");
+// Filtros
+const filterAnalyst = $("filterAnalyst");
+const filterType    = $("filterType");
+const filterFrom    = $("filterFrom");
+const filterTo      = $("filterTo");
+const filterSearch  = $("filterSearch");
+const btnResetFilters = $("btnResetFilters");
 
-    const badgeCount = $("badgeCount");
-    const badgeStorage = $("badgeStorage");
-    const badgeMode = $("badgeMode");
+// Ações topo
+const btnExportJSON = $("btnExportJSON");
+const btnExportCSV  = $("btnExportCSV");
+const btnImportJSON = $("btnImportJSON");
+const btnPrintPDF   = $("btnPrintPDF");
+const btnClearAll   = $("btnClearAll");
+const importFile    = $("importFile");
 
-    const kpiTotalHours = $("kpiTotalHours");
-    const kpiHolidayHours = $("kpiHolidayHours");
-    const kpiBankOut = $("kpiBankOut");
-    const kpiBalance = $("kpiBalance");
+// Estado
+let records = [];
+let editingId = null;
 
-    // Form
-    const entryForm = $("entryForm");
-    const analystEl = $("analyst");
-    const dateEl = $("date");
-    const hoursEl = $("hours");
-    const holidayEl = $("holiday");
-    const bankOutEl = $("bankOut");
-    const outReasonEl = $("outReason");
-    const notesEl = $("notes");
+const fmt2 = (n) => {
+  const num = Number(n) || 0;
+  return num.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+const safeText = (s) => (s ?? "").toString().trim();
+const todayISO = () => {
+  const d = new Date();
+  const pad = (x) => String(x).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+};
 
-    const btnSave = $("btnSave");
-    const btnCancelEdit = $("btnCancelEdit");
+// Carrega dados do localStorage
+function load() {
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    records = raw ? JSON.parse(raw) : [];
+    if(!Array.isArray(records)) records = [];
+    badgeStorage.textContent = "💾 Dados: localStorage (OK)";
+  }catch(e){
+    records = [];
+    badgeStorage.textContent = "💾 Dados: erro ao carregar";
+  }
+  // Defaults
+  if(!dateEl.value) dateEl.value = todayISO();
+  if(bankOutEl.value === "") bankOutEl.value = 0;
+  render();
+}
 
-    // Filtros
-    const filterAnalyst = $("filterAnalyst");
-    const filterType = $("filterType");
-    const filterFrom = $("filterFrom");
-    const filterTo = $("filterTo");
-    const filterSearch = $("filterSearch");
-    const btnResetFilters = $("btnResetFilters");
+// Salva dados
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
 
-    // Ações topo
-    const btnExportJSON = $("btnExportJSON");
-    const btnExportCSV = $("btnExportCSV");
-    const btnImportJSON = $("btnImportJSON");
-    const btnPrintPDF = $("btnPrintPDF");
-    const btnClearAll = $("btnClearAll");
-    const importFile = $("importFile");
+// Gera ID simples
+function makeId() {
+  return "rec_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+}
 
-    // Estado
-    let records = [];
-    let editingId = null;
+// Ordena por data (asc), depois createdAt
+function sortedAll() {
+  return [...records].sort((a,b) => {
+    const da = (a.date || "");
+    const db = (b.date || "");
+    if(da < db) return -1;
+    if(da > db) return 1;
+    return (a.createdAt||0) - (b.createdAt||0);
+  });
+}
 
-    const fmt2 = (n) => {
-      const num = Number(n) || 0;
-      return num.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    };
+// Aplica filtros
+function applyFilters(list) {
+  const fa = safeText(filterAnalyst.value).toLowerCase();
+  const ft = filterType.value;
+  const from = filterFrom.value || "";
+  const to = filterTo.value || "";
+  const q  = safeText(filterSearch.value).toLowerCase();
 
-    const safeText = (s) => (s ?? "").toString().trim();
+  return list.filter(r => {
+    const analyst = safeText(r.analyst).toLowerCase();
+    const date = r.date || "";
+    const hours = Number(r.hours) || 0;
+    const bankOut = Number(r.bankOut) || 0;
+    const holiday = !!r.holiday;
 
-    const todayISO = () => {
-      const d = new Date();
-      const pad = (x) => String(x).padStart(2, "0");
-      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-    };
+    if(fa && !analyst.includes(fa)) return false;
+    if(ft === "holiday" && !holiday) return false;
+    if(ft === "normal"  && holiday)  return false;
+    if(ft === "bankout" && !(bankOut > 0)) return false;
+    if(from && date < from) return false;
+    if(to   && date > to)   return false;
 
-    // Carrega dados do localStorage
-    function load() {
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        records = raw ? JSON.parse(raw) : [];
-        if(!Array.isArray(records)) records = [];
-        badgeStorage.textContent = "💾 Dados: localStorage (OK)";
-      }catch(e){
-        records = [];
-        badgeStorage.textContent = "💾 Dados: erro ao carregar";
-      }
-
-      // Defaults
-      if(!dateEl.value) dateEl.value = todayISO();
-      if(bankOutEl.value === "") bankOutEl.value = 0;
-
-      render();
+    if(q){
+      const hay = [
+        r.analyst, r.date, r.outReason, r.notes,
+        holiday ? "feriado" : "normal",
+        String(hours), String(bankOut)
+      ].join(" ").toLowerCase();
+      if(!hay.includes(q)) return false;
     }
+    return true;
+  });
+}
 
-    // Salva dados
-    function save() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+// Valida registros e retorna lista de alertas
+function buildNonConformities(listAllSorted) {
+  const issues = [];
+  const now = todayISO();
+  listAllSorted.forEach((r) => {
+    const tag = `(${r.analyst || "Sem analista"} • ${r.date || "Sem data"})`;
+    const hours = Number(r.hours);
+    const bankOut = Number(r.bankOut);
+    if(!safeText(r.analyst)) issues.push(`Analista vazio ${tag}`);
+    if(!safeText(r.date))    issues.push(`Data vazia ${tag}`);
+    if(r.date && r.date > now) issues.push(`Data futura detectada ${tag}`);
+    if(!(hours >= 0))        issues.push(`Horas inválidas ${tag}`);
+    if(!(bankOut >= 0))      issues.push(`Saída de banco inválida ${tag}`);
+    if(bankOut > 0 && !safeText(r.outReason)) {
+      issues.push(`Saída de banco informada sem motivo ${tag}`);
     }
+  });
+  // Saldo acumulado negativo (alerta) com base no total filtrado
+  const totals = computeTotals(listAllSorted);
+  if(totals.balance < 0) {
+    issues.push(`Saldo acumulado negativo: ${fmt2(totals.balance)} horas. Verifique saídas de banco.`);
+  }
+  return issues;
+}
 
-    // Gera ID simples
-    function makeId() {
-      return "rec_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+// Calcula totais (para lista recebida)
+function computeTotals(list) {
+  let totalHours = 0;
+  let holidayHours = 0;
+  let totalBankOut = 0;
+  for(const r of list) {
+    const h = Number(r.hours)   || 0;
+    const b = Number(r.bankOut) || 0;
+    totalHours  += h;
+    totalBankOut += b;
+    if(!!r.holiday) holidayHours += h;
+  }
+  const balance = totalHours - totalBankOut;
+  return { totalHours, holidayHours, totalBankOut, balance };
+}
+
+// Acumulado por analista
+function buildRunningBalanceMap(allSorted) {
+  const map = new Map();
+  const runningByAnalyst = Object.create(null);
+  for(const r of allSorted){
+    const key = (r.analyst || "").toLowerCase();
+    if(!(key in runningByAnalyst)) runningByAnalyst[key] = 0;
+    const h = Number(r.hours)   || 0;
+    const b = Number(r.bankOut) || 0;
+    runningByAnalyst[key] += (h - b);
+    map.set(r.id, runningByAnalyst[key]);
+  }
+  return map;
+}
+
+// Render da tabela + KPIs
+function render() {
+  const allSorted = sortedAll();
+  const view = applyFilters(allSorted);
+  const runningMap = buildRunningBalanceMap(allSorted);
+
+  // KPIs AGORA baseados no conjunto filtrado
+  const totals = computeTotals(view);
+  kpiTotalHours.textContent  = fmt2(totals.totalHours);
+  kpiHolidayHours.textContent= fmt2(totals.holidayHours);
+  kpiBankOut.textContent     = fmt2(totals.totalBankOut);
+  kpiBalance.textContent     = fmt2(totals.balance);
+
+  const countText = `${view.length} registro${view.length === 1 ? "" : "s"} (exibidos) • ${records.length} total`;
+  badgeCount.textContent = "📌 " + countText;
+
+  // Tabela
+  tableBody.innerHTML = "";
+  if(view.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td colspan="9" style="color: var(--muted); padding: 14px;">
+        Nenhum registro encontrado. Ajuste os filtros ou adicione um novo registro no formulário.
+      </td>`;
+    tableBody.appendChild(tr);
+  } else {
+    for(const r of view){
+      const tr = document.createElement("tr");
+      const holidayBadge = r.holiday
+        ? `<span class="badge good">✅ Sim</span>`
+        : `<span class="badge">— Não</span>`;
+      const bankOut = Number(r.bankOut) || 0;
+      const bankBadge = bankOut > 0
+        ? `<span class="badge warn">🔥 ${fmt2(bankOut)}</span>`
+        : `<span class="badge">0,00</span>`;
+      const accumulated = runningMap.get(r.id) ?? 0;
+      const accBadge = accumulated < 0
+        ? `<span class="badge bad">⚠ ${fmt2(accumulated)}</span>`
+        : `<span class="badge good">⏱ ${fmt2(accumulated)}</span>`;
+      tr.innerHTML = `
+        <td><strong>${escapeHtml(r.analyst)}</strong></td>
+        <td>${escapeHtml(r.date || "")}</td>
+        <td>${fmt2(r.hours)}</td>
+        <td>${holidayBadge}</td>
+        <td>${accBadge}</td>
+        <td>${bankBadge}</td>
+        <td>${escapeHtml(r.outReason || "")}</td>
+        <td>${escapeHtml(r.notes || "")}</td>
+        <td class="no-print">
+          <div class="actions">
+            <button class="btn small" data-act="edit" data-id="${r.id}">Editar</button>
+            <button class="btn small danger" data-act="del" data-id="${r.id}">Excluir</button>
+          </div>
+        </td>
+      `;
+      tableBody.appendChild(tr);
     }
+  }
 
-    // Ordena por data (asc), depois createdAt
-    function sortedAll() {
-      return [...records].sort((a,b) => {
-        const da = (a.date || "");
-        const db = (b.date || "");
-        if(da < db) return -1;
-        if(da > db) return 1;
-        return (a.createdAt||0) - (b.createdAt||0);
-      });
-    }
+  // Não conformidades (baseadas no conjunto exibido para ficar coerente com a análise atual)
+  const issues = buildNonConformities(view);
+  if(issues.length){
+    alertsList.innerHTML = issues.map(x => `<li>${escapeHtml(x)}</li>`).join("");
+    alertsBox.style.display = "block";
+  }else{
+    alertsBox.style.display = "none";
+  }
 
-    // Aplica filtros
-    function applyFilters(list) {
-      const fa = safeText(filterAnalyst.value).toLowerCase();
-      const ft = filterType.value;
-      const from = filterFrom.value || "";
-      const to = filterTo.value || "";
-      const q = safeText(filterSearch.value).toLowerCase();
-
-      return list.filter(r => {
-        const analyst = safeText(r.analyst).toLowerCase();
-        const date = r.date || "";
-        const hours = Number(r.hours)||0;
-        const bankOut = Number(r.bankOut)||0;
-        const holiday = !!r.holiday;
-
-        // Analyst
-        if(fa && !analyst.includes(fa)) return false;
-
-        // Type
-        if(ft === "holiday" && !holiday) return false;
-        if(ft === "normal" && holiday) return false;
-        if(ft === "bankout" && !(bankOut > 0)) return false;
-
-        // Date range
-        if(from && date < from) return false;
-        if(to && date > to) return false;
-
-        // Search
-        if(q){
-          const hay = [
-            r.analyst, r.date, r.outReason, r.notes,
-            holiday ? "feriado" : "normal",
-            String(hours), String(bankOut)
-          ].join(" ").toLowerCase();
-          if(!hay.includes(q)) return false;
-        }
-
-        return true;
-      });
-    }
-
-    // Valida registros e retorna lista de alertas
-    function buildNonConformities(listAllSorted) {
-      const issues = [];
-      const now = todayISO();
-
-      listAllSorted.forEach((r, idx) => {
-        const tag = `(${r.analyst || "Sem analista"} • ${r.date || "Sem data"})`;
-        const hours = Number(r.hours);
-        const bankOut = Number(r.bankOut);
-
-        if(!safeText(r.analyst)) issues.push(`Analista vazio ${tag}`);
-        if(!safeText(r.date)) issues.push(`Data vazia ${tag}`);
-        if(r.date && r.date > now) issues.push(`Data futura detectada ${tag}`);
-        if(!(hours >= 0)) issues.push(`Horas inválidas ${tag}`);
-        if(!(bankOut >= 0)) issues.push(`Saída de banco inválida ${tag}`);
-        if(bankOut > 0 && !safeText(r.outReason)) {
-          // opcional, mas útil alertar
-          issues.push(`Saída de banco informada sem motivo ${tag}`);
-        }
-      });
-
-      // Saldo acumulado negativo (alerta)
-      const totals = computeTotals(listAllSorted);
-      if(totals.balance < 0) {
-        issues.push(`Saldo acumulado negativo: ${fmt2(totals.balance)} horas. Verifique saídas de banco.`);
-      }
-
-      return issues;
-    }
-
-    // Calcula totais (para lista recebida)
-    function computeTotals(list) {
-      let totalHours = 0;
-      let holidayHours = 0;
-      let totalBankOut = 0;
-
-      for(const r of list) {
-        const h = Number(r.hours) || 0;
-        const b = Number(r.bankOut) || 0;
-        totalHours += h;
-        totalBankOut += b;
-        if(!!r.holiday) holidayHours += h;
-      }
-      const balance = totalHours - totalBankOut;
-      return { totalHours, holidayHours, totalBankOut, balance };
-    }
-
-    // Monta acumulado (running balance) com base em todos ordenados, mas exibe conforme lista filtrada
-    function buildRunningBalanceMap(allSorted) {
-      const map = new Map();
-      let running = 0;
-      for(const r of allSorted){
-        const h = Number(r.hours)||0;
-        const b = Number(r.bankOut)||0;
-        running += h - b;
-        map.set(r.id, running);
-      }
-      return map;
-    }
-
-    // Render da tabela + KPIs
-    function render() {
-      const allSorted = sortedAll();
-      const runningMap = buildRunningBalanceMap(allSorted);
-
-      // Filtrados para exibição
-      const view = applyFilters(allSorted);
-
-      // KPIs sempre do conjunto exibido? Aqui deixei KPIs do conjunto total (allSorted)
-      // Se preferir KPIs do filtro, troque allSorted por view abaixo.
-      const totals = computeTotals(allSorted);
-
-      kpiTotalHours.textContent = fmt2(totals.totalHours);
-      kpiHolidayHours.textContent = fmt2(totals.holidayHours);
-      kpiBankOut.textContent = fmt2(totals.totalBankOut);
-      kpiBalance.textContent = fmt2(totals.balance);
-
-      const countText = `${view.length} registro${view.length === 1 ? "" : "s"} (exibidos) • ${records.length} total`;
-      badgeCount.textContent = "📌 " + countText;
-
-      // Tabela
-      tableBody.innerHTML = "";
-      if(view.length === 0){
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td colspan="9" style="color: var(--muted); padding: 14px;">
-            Nenhum registro encontrado. Ajuste os filtros ou adicione um novo registro no formulário.
-          </td>`;
-        tableBody.appendChild(tr);
-      } else {
-        for(const r of view){
-          const tr = document.createElement("tr");
-          const holidayBadge = r.holiday
-            ? `<span class="badge good">✅ Sim</span>`
-            : `<span class="badge">— Não</span>`;
-
-          const bankOut = Number(r.bankOut)||0;
-          const bankBadge = bankOut > 0
-            ? `<span class="badge warn">🔥 ${fmt2(bankOut)}</span>`
-            : `<span class="badge">0,00</span>`;
-
-          const accumulated = runningMap.get(r.id) ?? 0;
-          const accBadge = accumulated < 0
-            ? `<span class="badge bad">⚠ ${fmt2(accumulated)}</span>`
-            : `<span class="badge good">⏱ ${fmt2(accumulated)}</span>`;
-
-          tr.innerHTML = `
-            <td><strong>${escapeHtml(r.analyst)}</strong></td>
-            <td>${escapeHtml(r.date || "")}</td>
-            <td>${fmt2(r.hours)}</td>
-            <td>${holidayBadge}</td>
-            <td>${accBadge}</td>
-            <td>${bankBadge}</td>
-            <td>${escapeHtml(r.outReason || "")}</td>
-            <td>${escapeHtml(r.notes || "")}</td>
-            <td class="no-print">
-              <div class="actions">
-                <button class="btn small" data-act="edit" data-id="${r.id}">Editar</button>
-                <button class="btn small danger" data-act="del" data-id="${r.id}">Excluir</button>
-              </div>
-            </td>
-          `;
-          tableBody.appendChild(tr);
-        }
-      }
-
-      // Não conformidades (com base em TODOS os registros ordenados)
-      const issues = buildNonConformities(allSorted);
-      if(issues.length){
-        alertsList.innerHTML = issues.map(x => `<li>${escapeHtml(x)}</li>`).join("");
-        alertsBox.style.display = "block";
-      }else{
-        alertsBox.style.display = "none";
-      }
-
-      // Escuta botões de ação (delegação)
-      tableBody.querySelectorAll("button[data-act]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = btn.getAttribute("data-id");
-          const act = btn.getAttribute("data-act");
-          if(act === "edit") startEdit(id);
-          if(act === "del") deleteRecord(id);
-        });
-      });
-    }
-
-    // Escape básico para evitar HTML injection na tabela
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    // Novo / editar: salvar
-    entryForm.addEventListener("submit", (ev) => {
-      ev.preventDefault();
-
-      const analyst = safeText(analystEl.value);
-      const date = dateEl.value;
-      const hours = Number(hoursEl.value);
-      const holiday = !!holidayEl.checked;
-      const bankOut = Number(bankOutEl.value);
-      const outReason = safeText(outReasonEl.value);
-      const notes = safeText(notesEl.value);
-
-      // Validações mínimas
-      const errs = [];
-      if(!analyst) errs.push("Informe o nome do analista.");
-      if(!date) errs.push("Informe a data do registro.");
-      if(!(hours >= 0)) errs.push("Horas trabalhadas deve ser número >= 0.");
-      if(!(bankOut >= 0)) errs.push("Saída de banco deve ser número >= 0.");
-
-      if(errs.length){
-        alert("Corrija antes de salvar:\n\n- " + errs.join("\n- "));
-        return;
-      }
-
-      if(editingId){
-        const idx = records.findIndex(r => r.id === editingId);
-        if(idx >= 0){
-          records[idx] = {
-            ...records[idx],
-            analyst, date, hours, holiday, bankOut, outReason, notes,
-            updatedAt: Date.now()
-          };
-        }
-        stopEdit();
-      }else{
-        records.push({
-          id: makeId(),
-          analyst, date, hours, holiday, bankOut, outReason, notes,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        });
-      }
-
-      save();
-      entryForm.reset();
-      dateEl.value = todayISO();
-      bankOutEl.value = 0;
-      holidayEl.checked = false;
-
-      // manter nome do analista para facilitar próximos lançamentos
-      analystEl.value = analyst;
-
-      render();
+  // Ações linha
+  tableBody.querySelectorAll("button[data-act]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      const act = btn.getAttribute("data-act");
+      if(act === "edit") startEdit(id);
+      if(act === "del")  deleteRecord(id);
     });
+  });
+}
 
-    // Editar
-    function startEdit(id){
-      const r = records.find(x => x.id === id);
-      if(!r) return;
+// Escape correto
+function escapeHtml(str){
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-      editingId = id;
-      badgeMode.textContent = "✍️ Modo: Edição";
-      btnSave.textContent = "Salvar Alterações";
-      btnCancelEdit.style.display = "inline-flex";
+// Novo / editar: salvar
+entryForm.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const analyst  = safeText(analystEl.value);
+  const date     = dateEl.value;
+  const hours    = Number(hoursEl.value);
+  const holiday  = !!holidayEl.checked;
+  const bankOut  = Number(bankOutEl.value);
+  const outReason= safeText(outReasonEl.value);
+  const notes    = safeText(notesEl.value);
 
-      analystEl.value = r.analyst || "";
-      dateEl.value = r.date || "";
-      hoursEl.value = (Number(r.hours)||0);
-      holidayEl.checked = !!r.holiday;
-      bankOutEl.value = (Number(r.bankOut)||0);
-      outReasonEl.value = r.outReason || "";
-      notesEl.value = r.notes || "";
+  const errs = [];
+  if(!analyst) errs.push("Informe o nome do analista.");
+  if(!date)    errs.push("Informe a data do registro.");
+  if(!(hours   >= 0)) errs.push("Horas trabalhadas deve ser número >= 0.");
+  if(!(bankOut >= 0)) errs.push("Saída de banco deve ser número >= 0.");
+  if(errs.length){
+    alert("Corrija antes de salvar:\n\n- " + errs.join("\n- "));
+    return;
+  }
 
-      // rola para o formulário no mobile
-      entryForm.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function stopEdit(){
-      editingId = null;
-      badgeMode.textContent = "✍️ Modo: Novo";
-      btnSave.textContent = "Salvar Registro";
-      btnCancelEdit.style.display = "none";
-    }
-
-    btnCancelEdit.addEventListener("click", () => {
-      stopEdit();
-      entryForm.reset();
-      dateEl.value = todayISO();
-      bankOutEl.value = 0;
-      holidayEl.checked = false;
-    });
-
-    // Excluir
-    function deleteRecord(id){
-      const r = records.find(x => x.id === id);
-      if(!r) return;
-      const ok = confirm(`Deseja excluir este registro?\n\nAnalista: ${r.analyst}\nData: ${r.date}\nHoras: ${r.hours}\nSaída: ${r.bankOut}`);
-      if(!ok) return;
-      records = records.filter(x => x.id !== id);
-      save();
-      render();
-    }
-
-    // Filtros -> rerender
-    [filterAnalyst, filterType, filterFrom, filterTo, filterSearch].forEach(el => {
-      el.addEventListener("input", render);
-      el.addEventListener("change", render);
-    });
-
-    btnResetFilters.addEventListener("click", () => {
-      filterAnalyst.value = "";
-      filterType.value = "all";
-      filterFrom.value = "";
-      filterTo.value = "";
-      filterSearch.value = "";
-      render();
-    });
-
-    // Export JSON (backup)
-    btnExportJSON.addEventListener("click", () => {
-      const payload = {
-        app: "Registro Banco de Horas Extras - NOC",
-        version: "2026",
-        exportedAt: new Date().toISOString(),
-        records
+  if(editingId){
+    const idx = records.findIndex(r => r.id === editingId);
+    if(idx >= 0){
+      records[idx] = {
+        ...records[idx],
+        analyst, date, hours, holiday, bankOut, outReason, notes,
+        updatedAt: Date.now()
       };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
-      downloadBlob(blob, `backup_noc_banco_horas_2026_${stamp()}.json`);
+    }
+    stopEdit();
+  }else{
+    records.push({
+      id: makeId(),
+      analyst, date, hours, holiday, bankOut, outReason, notes,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
     });
+  }
+  save();
+  entryForm.reset();
+  dateEl.value = todayISO();
+  bankOutEl.value = 0;
+  holidayEl.checked = false;
+  // manter nome do analista para próximos lançamentos
+  analystEl.value = analyst;
+  render();
+});
 
-    // Import JSON (backup)
-    btnImportJSON.addEventListener("click", () => importFile.click());
+// Editar
+function startEdit(id){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  editingId = id;
+  badgeMode.textContent = "✍️ Modo: Edição";
+  btnSave.textContent = "Salvar Alterações";
+  btnCancelEdit.style.display = "inline-flex";
+  analystEl.value  = r.analyst || "";
+  dateEl.value     = r.date || "";
+  hoursEl.value    = (Number(r.hours) || 0);
+  holidayEl.checked= !!r.holiday;
+  bankOutEl.value  = (Number(r.bankOut) || 0);
+  outReasonEl.value= r.outReason || "";
+  notesEl.value    = r.notes || "";
+  entryForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function stopEdit(){
+  editingId = null;
+  badgeMode.textContent = "✍️ Modo: Novo";
+  btnSave.textContent = "Salvar Registro";
+  btnCancelEdit.style.display = "none";
+}
+btnCancelEdit.addEventListener("click", () => {
+  stopEdit();
+  entryForm.reset();
+  dateEl.value = todayISO();
+  bankOutEl.value = 0;
+  holidayEl.checked = false;
+});
 
-    importFile.addEventListener("change", async () => {
-      const file = importFile.files && importFile.files[0];
-      if(!file) return;
+// Excluir
+function deleteRecord(id){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  const ok = confirm(`Deseja excluir este registro?\n\nAnalista: ${r.analyst}\nData: ${r.date}\nHoras: ${r.hours}\nSaída: ${r.bankOut}`);
+  if(!ok) return;
+  records = records.filter(x => x.id !== id);
+  save();
+  render();
+}
 
-      try{
-        const text = await file.text();
-        const obj = JSON.parse(text);
+// Filtros -> rerender
+[filterAnalyst, filterType, filterFrom, filterTo, filterSearch].forEach(el => {
+  el.addEventListener("input", render);
+  el.addEventListener("change", render);
+});
+btnResetFilters.addEventListener("click", () => {
+  filterAnalyst.value = "";
+  filterType.value = "all";
+  filterFrom.value = "";
+  filterTo.value = "";
+  filterSearch.value = "";
+  render();
+});
 
-        let imported = null;
-        if(Array.isArray(obj)) imported = obj; // permite arquivo somente array
-        else if(obj && Array.isArray(obj.records)) imported = obj.records;
+// Export JSON (backup)
+// Agora: se houver filtros ativos, exporta apenas o conjunto filtrado; senão, exporta tudo.
+btnExportJSON.addEventListener("click", () => {
+  const allSorted = sortedAll();
+  const view = applyFilters(allSorted);
+  const exporting = hasActiveFilters() ? view : allSorted;
 
-        if(!imported) throw new Error("Formato inválido: esperado {records:[...]} ou [...]");
+  const payload = {
+    app: "Registro Banco de Horas Extras - NOC",
+    version: "2026",
+    exportedAt: new Date().toISOString(),
+    records: exporting
+  };
+  const scope = hasActiveFilters() ? "filtrado" : "completo";
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+  downloadBlob(blob, `backup_noc_banco_horas_2026_${scope}_${stamp()}.json`);
+});
 
-        // Sanitiza campos mínimos
-        const cleaned = imported
-          .filter(x => x && typeof x === "object")
-          .map(x => ({
-            id: safeText(x.id) || makeId(),
-            analyst: safeText(x.analyst),
-            date: safeText(x.date),
-            hours: Number(x.hours) || 0,
-            holiday: !!x.holiday,
-            bankOut: Number(x.bankOut) || 0,
-            outReason: safeText(x.outReason),
-            notes: safeText(x.notes),
-            createdAt: Number(x.createdAt) || Date.now(),
-            updatedAt: Number(x.updatedAt) || Date.now()
-          }));
+// Export CSV (mesma lógica do JSON)
+btnExportCSV.addEventListener("click", () => {
+  const allSorted = sortedAll();
+  const view = applyFilters(allSorted);
+  const exporting = hasActiveFilters() ? view : allSorted;
+  const headers = [
+    "Analista","Data","HorasTrabalhadas","FeriadoTrabalhado","SaidaDeBanco","MotivoSaida","Comentarios","CriadoEm","AtualizadoEm"
+  ];
+  const rows = exporting.map(r => ([
+    r.analyst,
+    r.date,
+    (Number(r.hours)   || 0).toString().replace(".", ","), // pt-BR friendly
+    r.holiday ? "Sim" : "Nao",
+    (Number(r.bankOut) || 0).toString().replace(".", ","),
+    r.outReason || "",
+    (r.notes || "").replace(/\s+/g, " ").trim(),
+    r.createdAt ? new Date(r.createdAt).toISOString() : "",
+    r.updatedAt ? new Date(r.updatedAt).toISOString() : ""
+  ]));
+  const csv = [headers, ...rows].map(cols => cols.map(csvEscape).join(";")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const scope = hasActiveFilters() ? "filtrado" : "completo";
+  downloadBlob(blob, `registro_noc_banco_horas_2026_${scope}_${stamp()}.csv`);
+});
 
-        const mode = confirm(
-          "Importação concluída.\n\nOK = Substituir todos os registros atuais\nCANCELAR = Mesclar (adicionar) aos registros existentes"
-        );
+function csvEscape(v){
+  const s = String(v ?? "");
+  // Se tiver ; " ou quebra de linha, encapsula em aspas e dobra aspas
+  if(/[;"\n\r]/.test(s)){
+    return `"${s.replaceAll('"','""')}"`;
+  }
+  return s;
+}
+function hasActiveFilters(){
+  return (
+    safeText(filterAnalyst.value) ||
+    filterType.value !== "all" ||
+    safeText(filterFrom.value) ||
+    safeText(filterTo.value) ||
+    safeText(filterSearch.value)
+  );
+}
 
-        if(mode){
-          records = cleaned;
+// Imprimir/PDF
+btnPrintPDF.addEventListener("click", () => window.print());
+
+// Limpar tudo
+btnClearAll.addEventListener("click", () => {
+  const ok = confirm("ATENÇÃO!\n\nIsso vai APAGAR todos os registros locais deste navegador.\nRecomendado fazer Exportar JSON antes.\n\nDeseja continuar?");
+  if(!ok) return;
+  records = [];
+  save();
+  stopEdit();
+  render();
+});
+
+// ===== Import JSON (merge + backup automático) =====
+btnImportJSON.addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", async () => {
+  const file = importFile.files && importFile.files[0];
+  if(!file) return;
+  try{
+    // 1) Backup automático do estado atual
+    const prePayload = {
+      app: "Registro Banco de Horas Extras - NOC",
+      version: "2026",
+      exportedAt: new Date().toISOString(),
+      records
+    };
+    downloadBlob(new Blob([JSON.stringify(prePayload,null,2)], {type:"application/json;charset=utf-8"}), `backup_pre_import_${stamp()}.json`);
+
+    // 2) Lê e interpreta
+    const text = await file.text();
+    const obj = JSON.parse(text);
+    let imported = null;
+    if(Array.isArray(obj)) imported = obj; // aceita arquivo somente array
+    else if(obj && Array.isArray(obj.records)) imported = obj.records;
+    if(!imported) throw new Error("Formato inválido: esperado {records:[...]} ou [...]");
+
+    // 3) Sanitiza
+    const cleaned = imported
+      .filter(x => x && typeof x === "object")
+      .map(x => ({
+        id: safeText(x.id) || makeId(),
+        analyst: safeText(x.analyst),
+        date: safeText(x.date),
+        hours: Number(x.hours) || 0,
+        holiday: !!x.holiday,
+        bankOut: Number(x.bankOut) || 0,
+        outReason: safeText(x.outReason),
+        notes: safeText(x.notes),
+        createdAt: Number(x.createdAt) || Date.now(),
+        updatedAt: Number(x.updatedAt) || Date.now()
+      }))
+      // ignora registros sem analista OU sem data (não fazem sentido)
+      .filter(x => x.analyst && x.date);
+
+    // 4) Deduplicação e upsert por ID + chave composta
+    const existingById = new Map(records.map(r => [r.id, r]));
+    const existingKeySet = new Set(records.map(r => compositeKey(r)));
+
+    let added = 0, updated = 0, skipped = 0;
+
+    for(const r of cleaned){
+      // se ID existe -> upsert (atualiza o registro)
+      if(existingById.has(r.id)){
+        const idx = records.findIndex(x => x.id === r.id);
+        if(idx >= 0){
+          // Mantém createdAt antigo
+          records[idx] = { ...records[idx], ...r, createdAt: records[idx].createdAt, updatedAt: Date.now() };
+          updated++;
         }else{
-          // Mescla evitando IDs duplicados
-          const ids = new Set(records.map(r => r.id));
-          for(const r of cleaned){
-            if(ids.has(r.id)) r.id = makeId();
-            records.push(r);
-          }
+          // fallback (deveria não ocorrer)
+          records.push({ ...r, updatedAt: Date.now() });
+          added++;
         }
-
-        save();
-        render();
-        alert("Importação realizada com sucesso!");
-      }catch(e){
-        alert("Falha ao importar JSON:\n" + (e?.message || e));
-      }finally{
-        importFile.value = "";
+        continue;
       }
-    });
 
-    // Export CSV
-    btnExportCSV.addEventListener("click", () => {
-      const allSorted = sortedAll();
-      const headers = [
-        "Analista","Data","HorasTrabalhadas","FeriadoTrabalhado","SaidaDeBanco","MotivoSaida","Comentarios","CriadoEm","AtualizadoEm"
-      ];
-      const rows = allSorted.map(r => ([
-        r.analyst,
-        r.date,
-        (Number(r.hours)||0).toString().replace(".", ","), // pt-BR friendly
-        r.holiday ? "Sim" : "Nao",
-        (Number(r.bankOut)||0).toString().replace(".", ","),
-        r.outReason || "",
-        (r.notes || "").replace(/\s+/g, " ").trim(),
-        r.createdAt ? new Date(r.createdAt).toISOString() : "",
-        r.updatedAt ? new Date(r.updatedAt).toISOString() : ""
-      ]));
-
-      const csv = [headers, ...rows].map(cols => cols.map(csvEscape).join(";")).join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-      downloadBlob(blob, `registro_noc_banco_horas_2026_${stamp()}.csv`);
-    });
-
-    function csvEscape(v){
-      const s = String(v ?? "");
-      // Se tiver ; " ou quebra de linha, encapsula em aspas e dobra aspas
-      if(/[;"\n\r]/.test(s)){
-        return `"${s.replaceAll('"','""')}"`;
+      // se chave composta já existe -> ignora (duplicado lógico)
+      if(existingKeySet.has(compositeKey(r))){
+        skipped++;
+        continue;
       }
-      return s;
+
+      // novo registro
+      r.id = makeId(); // garante ID único local
+      records.push(r);
+      existingById.set(r.id, r);
+      existingKeySet.add(compositeKey(r));
+      added++;
     }
 
-    // Imprimir/PDF
-    btnPrintPDF.addEventListener("click", () => window.print());
+    save();
+    render();
+    alert(`Importação finalizada (merge seguro):\n\nAdicionados: ${added}\nAtualizados: ${updated}\nIgnorados (duplicados): ${skipped}`);
+  }catch(e){
+    alert("Falha ao importar JSON:\n" + (e?.message || e));
+  }finally{
+    importFile.value = "";
+  }
+});
 
-    // Limpar tudo
-    btnClearAll.addEventListener("click", () => {
-      const ok = confirm("ATENÇÃO!\n\nIsso vai APAGAR todos os registros locais deste navegador.\nRecomendado fazer Exportar JSON antes.\n\nDeseja continuar?");
-      if(!ok) return;
-      records = [];
-      save();
-      stopEdit();
-      render();
-    });
+function compositeKey(r){
+  return [
+    (r.analyst || "").toLowerCase(),
+    r.date || "",
+    Number(r.hours) || 0,
+    Number(r.bankOut) || 0,
+    (r.outReason || "").toLowerCase(),
+    (r.notes || "").toLowerCase()
+  ].join("|");
+}
 
-    function stamp(){
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2,"0");
-      return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
-    }
+// Utilidades
+function stamp(){
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2,"0");
+  return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+}
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
 
-    function downloadBlob(blob, filename){
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    // Inicializa
-    load();
-  </script>
+// Inicializa
+load();
+</script>
 </body>
 </html>
