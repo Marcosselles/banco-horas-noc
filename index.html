@@ -353,109 +353,12 @@
     tr:hover td{ background: transparent; }
     .badge{ border-color:#ccc; color:#333; background:#f5f5f5; }
   }
-
-  /* ================== Boas-vindas (overlay) ================== */
-  .welcome{
-    position: fixed;
-    inset: 0;
-    z-index: 999; /* acima de tudo */
-    background:
-      radial-gradient(900px 400px at 10% -10%, rgba(110,231,255,.10), transparent 60%),
-      radial-gradient(900px 400px at 90% 0%, rgba(167,139,250,.10), transparent 60%),
-      linear-gradient(180deg, #07070a 0%, var(--bg) 45%, #07070a 100%);
-    display: grid;
-    place-items: center;
-    padding: 24px;
-  }
-  .welcome-card{
-    width: min(960px, 96vw);
-    border: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(20,20,33,.85), rgba(20,20,33,.55));
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    padding: 28px;
-    text-align: center;
-  }
-  .welcome-title{
-    margin: 0 0 10px 0;
-    font-size: clamp(24px, 5vw, 40px);
-    font-weight: 900;
-    letter-spacing: .5px;
-    line-height: 1.15;
-    background: linear-gradient(90deg, var(--accent), #e2f7ff 30%, var(--accent2) 60%, #f2e7ff 90%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: hue-shift 6s linear infinite, glow 2.6s ease-in-out infinite alternate;
-  }
-  .welcome-sub{
-    margin: 8px 0 18px;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .welcome-actions{
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .btn.hero{
-    padding: 12px 16px;
-    font-size: 14px;
-    border-radius: 14px;
-  }
-  .btn.hero.primary{
-    border-color: rgba(110,231,255,.45);
-    background: linear-gradient(135deg, rgba(110,231,255,.22), rgba(167,139,250,.16));
-  }
-  .welcome-logo{
-    width: 60px; height: 60px;
-    border-radius: 16px;
-    margin: 0 auto 14px;
-    display:grid; place-items:center;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(110,231,255,.8), transparent 55%),
-      radial-gradient(circle at 70% 70%, rgba(167,139,250,.8), transparent 55%),
-      linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,0));
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 10px 26px rgba(0,0,0,.55);
-    font-weight: 800;
-    letter-spacing: .4px;
-  }
-  @keyframes hue-shift{
-    0%{ filter: hue-rotate(0deg); }
-    100%{ filter: hue-rotate(360deg); }
-  }
-  @keyframes glow{
-    from { text-shadow: 0 0 10px rgba(110,231,255,.25), 0 0 20px rgba(167,139,250,.18); }
-    to   { text-shadow: 0 0 16px rgba(110,231,255,.40), 0 0 30px rgba(167,139,250,.30); }
-  }
-  /* =========================================================== */
   </style>
 
   <!-- Supabase JS SDK v2 (3.1) -->
   https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2</script>
 </head>
 <body>
-
-  <!-- ================== BOAS-VINDAS: aparece primeiro ================== -->
-  <section id="welcome" class="welcome" aria-labelledby="welcome-title">
-    <div class="welcome-card">
-      <div class="welcome-logo" aria-hidden="true">NOC</div>
-      <h1 id="welcome-title" class="welcome-title">
-        Bem-vindo ao Banco de Horas Extras — TIME NOC TTECH CLOUD
-      </h1>
-      <p class="welcome-sub">
-        Centralize seus lançamentos com segurança. Faça login para sincronizar com o Supabase ou continue sem login usando armazenamento local.
-      </p>
-      <div class="welcome-actions">
-        <button id="btnWelcomeLogin" class="btn hero primary">Entrar</button>
-        <button id="btnWelcomeContinue" class="btn hero">Continuar sem login</button>
-      </div>
-    </div>
-  </section>
-  <!-- =============================================================== -->
-
   <div class="container">
     <header>
       <div class="brand">
@@ -473,11 +376,12 @@
         <button class="chip" id="btnPrintPDF" title="Imprimir/Salvar em PDF">Imprimir/PDF</button>
         <button class="chip" id="btnClearAll" title="Apagar todos os registros (cuidado)">Limpar Tudo</button>
 
-        <!-- 3.2: Auth no header -->
+        <!-- ▼▼ 3.2: Botões de login/logout e badges -->
         <button class="chip" id="btnShowLogin" title="Entrar">Entrar</button>
         <button class="chip" id="btnLogout" title="Sair" style="display:none;">Sair</button>
         <span class="badge" id="whoami" style="margin-left:6px;">Desconectado</span>
         <span class="badge" id="badgeRole" style="margin-left:6px;">Papel: —</span>
+        <!-- ▲▲ fim 3.2 -->
       </nav>
     </header>
 
@@ -519,7 +423,7 @@
       </div>
     </section>
 
-    <!-- 3.2: Cartão de Login -->
+    <!-- ▼▼ 3.2: Cartão de Login (após Resumo, antes do <main>) -->
     <section class="card no-print" id="loginBox" style="display:none; margin-top:12px;">
       <div class="card-b">
         <div class="grid">
@@ -541,6 +445,7 @@
         </div>
       </div>
     </section>
+    <!-- ▲▲ fim cartão de Login -->
 
     <main>
       <!-- Tabela + filtros -->
@@ -726,6 +631,7 @@
     const SUPABASE_ANON_KEY = "SEU-ANON-PUBLIC-KEY";               // <= TROCAR
     /** ================================== **/
 
+    // Aguarda SDK do Supabase (carregado com defer no <head>)
     function waitForSupabase() {
       return new Promise((resolve, reject) => {
         const start = Date.now();
@@ -737,38 +643,18 @@
       });
     }
 
-    // Boas-vindas: fechar/abrir helpers
-    function closeWelcome() {
-      const el = document.getElementById('welcome');
-      if (el) el.style.display = 'none';
-    }
-    function openLoginBox() {
-      const loginBox = document.getElementById('loginBox');
-      if (loginBox) {
-        loginBox.style.display = 'block';
-        loginBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-    // Botões da Boas-vindas
-    document.getElementById('btnWelcomeLogin')?.addEventListener('click', () => {
-      closeWelcome();
-      openLoginBox();
-    });
-    document.getElementById('btnWelcomeContinue')?.addEventListener('click', () => {
-      closeWelcome(); // segue sem login (localStorage)
-    });
-
     (async () => {
-      // Espera SDK (não bloqueia a UI se falhar)
-      try { await waitForSupabase(); } catch(e){ console.warn(e); }
-
-      if (!window.supabase) {
-        // SDK não carregou, mas vida segue para uso offline/localStorage
+      try {
+        await waitForSupabase();
+      } catch (e) {
+        console.error(e);
+        // Não bloqueia o restante do app de localStorage
         return;
       }
+
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      // Elementos Auth
+      // Elementos (sem conflitar com seu "$")
       const byId = (id) => document.getElementById(id);
       const whoami      = byId("whoami");
       const btnShowLogin= byId("btnShowLogin");
@@ -789,12 +675,10 @@
           btnShowLogin && (btnShowLogin.style.display = "none");
           btnLogout    && (btnLogout.style.display    = "inline-flex");
           loginBox     && (loginBox.style.display     = "none");
-          // Autenticado -> garante que a Boas-vindas está fechada
-          closeWelcome();
 
-          // Papel via profiles (se existir)
+          // Tenta ler papel (se existir tabela profiles)
           try {
-            const { data } = await supabase
+            const { data, error } = await supabase
               .from("profiles")
               .select("role")
               .eq("id", authUser.id)
@@ -809,54 +693,55 @@
           badgeRole && (badgeRole.textContent = "Papel: —");
           btnShowLogin && (btnShowLogin.style.display = "inline-flex");
           btnLogout    && (btnLogout.style.display    = "none");
-          // Se desejar SEMPRE mostrar a Boas-vindas quando deslogado, remova o comentário abaixo:
-          // document.getElementById('welcome').style.display = 'grid';
+          // Mantém loginBox fechado por padrão
         }
       }
 
-      // Header: abrir/fechar caixinha de login
+      // Abrir/fechar caixinha de login
       btnShowLogin?.addEventListener("click", () => {
         if (!loginBox) return;
-        const hidden = (loginBox.style.display === "none" || !loginBox.style.display);
-        loginBox.style.display = hidden ? "block" : "none";
-        if (!hidden) return;
-        loginBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const isHidden = (loginBox.style.display === "none" || !loginBox.style.display);
+        loginBox.style.display = isHidden ? "block" : "none";
       });
 
-      // Login email/senha
+      // Login com email/senha
       btnDoLogin?.addEventListener("click", async () => {
         const email = safe(loginEmail?.value);
         const pass  = loginPass?.value;
         if (!email || !pass) return alert("Informe email e senha.");
+
         const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
         if (error) return alert("Falha ao entrar: " + error.message);
+
         loginEmail.value = "";
         loginPass.value = "";
         alert("Login realizado!");
       });
 
-      // Signup (opcional)
+      // Criar conta (opcional)
       btnDoSignup?.addEventListener("click", async () => {
         const email = safe(loginEmail?.value);
         const pass  = loginPass?.value;
         if (!email || !pass) return alert("Informe email e senha.");
+
         const { error } = await supabase.auth.signUp({ email, password: pass });
         if (error) return alert("Falha ao cadastrar: " + error.message);
+
         alert("Conta criada! Se confirmação de email estiver ativa, valide seu endereço antes de entrar.");
       });
 
       // Logout
       btnLogout?.addEventListener("click", async () => {
         await supabase.auth.signOut();
-        // Opcional: reabrir boas-vindas ao deslogar
-        // document.getElementById('welcome').style.display = 'grid';
       });
 
-      // Sessão
+      // Mudanças na sessão (login/logout/refresh)
       supabase.auth.onAuthStateChange((_evt, session) => {
         authUser = session?.user || null;
         refreshAuthUI();
       });
+
+      // Estado inicial
       const { data: { session } } = await supabase.auth.getSession();
       authUser = session?.user || null;
       refreshAuthUI();
@@ -864,7 +749,7 @@
   </script>
   <!-- ========== fim 3.2 Auth ========== -->
 
-  <!-- ========== SEU SCRIPT ATUAL (sem mudanças de lógica) ========== -->
+  <!-- ========== SEU SCRIPT ATUAL (sem mudanças) ========== -->
   <script>
   /****************************************
    * Registro NOC v2026 (Safe Import)
@@ -977,7 +862,7 @@
     const ft = filterType.value;
     const from = filterFrom.value || "";
     const to = filterTo.value || "";
-    const q  = safeText(filterSearch.value).toLowerCase();
+       const q  = safeText(filterSearch.value).toLowerCase();
 
     return list.filter(r => {
       const analyst = safeText(r.analyst).toLowerCase();
@@ -1022,7 +907,7 @@
         issues.push(`Saída de banco informada sem motivo ${tag}`);
       }
     });
-    // Saldo acumulado negativo (alerta) baseado no total filtrado
+    // Saldo acumulado negativo (alerta) com base no total filtrado
     const totals = computeTotals(listAllSorted);
     if(totals.balance < 0) {
       issues.push(`Saldo acumulado negativo: ${fmt2(totals.balance)} horas. Verifique saídas de banco.`);
@@ -1030,7 +915,7 @@
     return issues;
   }
 
-  // Calcula totais
+  // Calcula totais (para lista recebida)
   function computeTotals(list) {
     let totalHours = 0;
     let holidayHours = 0;
@@ -1061,13 +946,13 @@
     return map;
   }
 
-  // Render
+  // Render da tabela + KPIs
   function render() {
     const allSorted = sortedAll();
     const view = applyFilters(allSorted);
     const runningMap = buildRunningBalanceMap(allSorted);
 
-    // KPIs (conjunto filtrado)
+    // KPIs baseados no conjunto filtrado
     const totals = computeTotals(view);
     kpiTotalHours.textContent  = fmt2(totals.totalHours);
     kpiHolidayHours.textContent= fmt2(totals.holidayHours);
@@ -1120,7 +1005,7 @@
       }
     }
 
-    // Não conformidades (conjunto exibido)
+    // Não conformidades (baseadas no conjunto exibido)
     const issues = buildNonConformities(view);
     if(issues.length){
       alertsList.innerHTML = issues.map(x => `<li>${escapeHtml(x)}</li>`).join("");
@@ -1140,6 +1025,7 @@
     });
   }
 
+  // Escape correto
   function escapeHtml(str){
     return String(str ?? "")
       .replaceAll("&", "&amp;")
@@ -1149,7 +1035,7 @@
       .replaceAll("'", "&#039;");
   }
 
-  // Salvar novo/editar
+  // Novo / editar: salvar
   entryForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
     const analyst  = safeText(analystEl.value);
@@ -1193,7 +1079,8 @@
     dateEl.value = todayISO();
     bankOutEl.value = 0;
     holidayEl.checked = false;
-    analystEl.value = analyst; // manter nome
+    // manter nome do analista para próximos lançamentos
+    analystEl.value = analyst;
     render();
   });
 
@@ -1253,7 +1140,7 @@
     render();
   });
 
-  // Export JSON
+  // Export JSON (backup)
   btnExportJSON.addEventListener("click", () => {
     const allSorted = sortedAll();
     const view = applyFilters(allSorted);
@@ -1270,7 +1157,7 @@
     downloadBlob(blob, `backup_noc_banco_horas_2026_${scope}_${stamp()}.json`);
   });
 
-  // Export CSV
+  // Export CSV (mesma lógica do JSON)
   btnExportCSV.addEventListener("click", () => {
     const allSorted = sortedAll();
     const view = applyFilters(allSorted);
@@ -1281,7 +1168,7 @@
     const rows = exporting.map(r => ([
       r.analyst,
       r.date,
-      (Number(r.hours)   || 0).toString().replace(".", ","),
+      (Number(r.hours)   || 0).toString().replace(".", ","), // pt-BR friendly
       r.holiday ? "Sim" : "Nao",
       (Number(r.bankOut) || 0).toString().replace(".", ","),
       r.outReason || "",
@@ -1297,6 +1184,7 @@
 
   function csvEscape(v){
     const s = String(v ?? "");
+    // Se tiver ; " ou quebra de linha, encapsula em aspas e dobra aspas
     if(/[;"\n\r]/.test(s)){
       return `"${s.replaceAll('"','""')}"`;
     }
@@ -1344,7 +1232,7 @@
       const text = await file.text();
       const obj = JSON.parse(text);
       let imported = null;
-      if(Array.isArray(obj)) imported = obj;
+      if(Array.isArray(obj)) imported = obj; // aceita arquivo somente array
       else if(obj && Array.isArray(obj.records)) imported = obj.records;
       if(!imported) throw new Error("Formato inválido: esperado {records:[...]} ou [...]");
 
@@ -1363,31 +1251,39 @@
           createdAt: Number(x.createdAt) || Date.now(),
           updatedAt: Number(x.updatedAt) || Date.now()
         }))
+        // ignora registros sem analista OU sem data (não fazem sentido)
         .filter(x => x.analyst && x.date);
 
-      // 4) Deduplicação e upsert
+      // 4) Deduplicação e upsert por ID + chave composta
       const existingById = new Map(records.map(r => [r.id, r]));
       const existingKeySet = new Set(records.map(r => compositeKey(r)));
 
       let added = 0, updated = 0, skipped = 0;
 
       for(const r of cleaned){
+        // se ID existe -> upsert (atualiza o registro)
         if(existingById.has(r.id)){
           const idx = records.findIndex(x => x.id === r.id);
           if(idx >= 0){
+            // Mantém createdAt antigo
             records[idx] = { ...records[idx], ...r, createdAt: records[idx].createdAt, updatedAt: Date.now() };
             updated++;
           }else{
+            // fallback (deveria não ocorrer)
             records.push({ ...r, updatedAt: Date.now() });
             added++;
           }
           continue;
         }
+
+        // se chave composta já existe -> ignora (duplicado lógico)
         if(existingKeySet.has(compositeKey(r))){
           skipped++;
           continue;
         }
-        r.id = makeId();
+
+        // novo registro
+        r.id = makeId(); // garante ID único local
         records.push(r);
         existingById.set(r.id, r);
         existingKeySet.add(compositeKey(r));
